@@ -1,0 +1,84 @@
+# -------------------------------
+# Python
+# -------------------------------
+_pycache_/
+*.py[cod]
+*.pyo
+*.pyd
+*.swp
+*.bak
+*.tmp
+
+# Byte-compiled / optimized / DLL files
+*.so
+*.dll
+*.dylib
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# -------------------------------
+# Environment & Secrets
+# -------------------------------
+.env
+.env.*
+*.env.local
+secrets.json
+config.json
+
+# -------------------------------
+# Dependencies
+# -------------------------------
+pip-wheel-metadata/
+pip-log.txt
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# -------------------------------
+# FastAPI + Uvicorn
+# -------------------------------
+instance/
+*.log
+logs/
+*.pid
+
+# -------------------------------
+# IDE / Editors
+# -------------------------------
+.vscode/
+.idea/
+*.iml
+
+# -------------------------------
+# PyTest / Testing
+# -------------------------------
+htmlcov/
+.coverage
+.coverage.*
+.cache
+pytest_cache/
+
+# -------------------------------
+# Database / Storage Files
+# -------------------------------
+*.db
+*.sqlite3
+*.sqlite
+migrations/
+
+# -------------------------------
+# Uploads
+# -------------------------------
+media/
+uploads/
+staticfiles/
+
+# -------------------------------
+# OS Generated Files
+# -------------------------------
+.DS_Store
+Thumbs.db
