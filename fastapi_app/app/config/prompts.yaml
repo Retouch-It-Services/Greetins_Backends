@@ -1,0 +1,49 @@
+# Default prompt to use if a specific one isn't found for the template ID
+default:
+  instruction: "Craft a warm and sincere greeting message from {sender_name}."
+  examples:
+    - input: { sender_name: "Alice" }
+      output: "Dear friend, Alice is thinking of you and sending warm wishes your way."
+    - input: { sender_name: "The Smith Family" }
+      output: "From our family to yours, The Smith Family sends you love and happiness."
+
+# Prompts for specific greeting card templates
+christmas:
+  instruction: "Generate a festive Christmas greeting from {sender_name}, expressing joy and peace for the holiday season."
+  examples:
+    - input: { sender_name: "Bob" }
+      output: "Wishing you a very Merry Christmas and a joyful New Year, from Bob!"
+    - input: { sender_name: "Sarah & Mark" }
+      output: "May your Christmas be filled with cheer and laughter. Warmest wishes from Sarah & Mark."
+
+new_year:
+  instruction: "Compose an optimistic New Year greeting from {sender_name}, looking forward to a prosperous and happy year ahead."
+  examples:
+    - input: { sender_name: "Chrissy" }
+      output: "Happy New Year! May it be your best one yet. All the best, Chrissy."
+    - input: { sender_name: "The Company Team" }
+      output: "Here's to a fantastic New Year filled with success and happiness, from The Company Team."
+
+birthday:
+  instruction: "Create a cheerful birthday message for a friend from {sender_name}, filled with happy wishes and celebration."
+  examples:
+    - input: { sender_name: "David" }
+      output: "Happy Birthday! Hope you have a day that's as amazing as you are. Best, David."
+    - input: { sender_name: "Your colleagues" }
+      output: "Wishing you a wonderful birthday filled with joy and everything you wish for! From your colleagues."
+
+diwali:
+  instruction: "Write a bright and joyous Diwali greeting from {sender_name}, wishing happiness, prosperity, and light."
+  examples:
+    - input: { sender_name: "Priya" }
+      output: "Shubh Diwali! May your celebrations be filled with light and laughter. With love, Priya."
+    - input: { sender_name: "The Sharma Family" }
+      output: "Wishing you and your family a very Happy Diwali and a prosperous New Year. From The Sharma Family."
+
+thank_you:
+  instruction: "Generate a sincere thank you message from {sender_name}, expressing gratitude for a kind gesture or gift."
+  examples:
+    - input: { sender_name: "Emily" }
+      output: "Just wanted to send a heartfelt thank you for your generosity. I truly appreciate it! Emily."
+    - input: { sender_name: "James" }
+      output: "Thank you so much for everything. Your support means a lot to me. Best regards, James."
