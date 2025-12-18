@@ -18,3 +18,6 @@ sqlalchemy==2.0.36
 dotenv
 alembic
 psycopg2-binary
+requests==2.31.0
+beautifulsoup4==4.12.2
+requests

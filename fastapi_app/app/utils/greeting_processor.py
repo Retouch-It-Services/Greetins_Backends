@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+import requests
+import json
 
 import google.generativeai as genai
 import yaml
@@ -18,6 +20,12 @@ if not GEMINI_API_KEY:
 
 genai.configure(api_key=GEMINI_API_KEY)
 MODEL_NAME = "gemini-pro"
+
+# --- ZeptoMail Configuration ---
+ZEPTOMAIL_API_KEY = os.environ.get("ZEPTOMAIL_API_KEY")
+ZEPTOMAIL_FROM_EMAIL = os.environ.get("ZEPTOMAIL_FROM_EMAIL")
+# ZeptoMail API endpoint for sending emails
+ZEPTO_API_URL = os.environ.get("ZEPTO_API_URL", "https://api.zeptomail.com/v1.1/email")
 
 
 # --- YAML Loading Mechanism ---
@@ -87,8 +95,10 @@ def _generate_ai_message(
         )
 
 
-def process_and_send_greeting(payload: GreetingSendRequest) -> GreetingSendResponse:
-    # ... (rest of the function is the same)
+from .email_service import send_zepto_email
+
+
+async def process_and_send_greeting(payload: GreetingSendRequest) -> GreetingSendResponse:
     template_content = f"<h1>Hello from {payload.greeting_template_id}!</h1>"
     print(f"Loading template: {payload.greeting_template_id}")
 
@@ -99,31 +109,99 @@ def process_and_send_greeting(payload: GreetingSendRequest) -> GreetingSendRespo
             template_id=payload.greeting_template_id,
             sender_name=payload.sender_name,
         )
-        rendered_card = f"{template_content}<p>{final_message}</p><p>From: {payload.sender_name}</p>"
-    else:
-        rendered_card = f"{template_content}<p>{final_message}</p><p>From: {payload.sender_name}</p>"
-    print("Rendering custom message...")
+    
+    # Determine the card image to use
+    card_image_html = ""
+    base64_image_for_attachment = None
+    
+    if payload.card_image:
+        image_url = payload.card_image
+        
+        # Check if it's a base64 image (data:image/...)
+        if image_url.startswith('data:image'):
+            # Use CID reference for inline attachment (works in all email clients)
+            card_image_html = '<img src="cid:greeting_card_image" alt="Greeting Card" style="max-width: 500px; width: 100%; height: auto; border-radius: 10px; margin: 20px auto; display: block;">'
+            base64_image_for_attachment = image_url.split(',')[1] # just the data
+            print("Using CID inline image attachment")
+        elif image_url.startswith('/assets/'):
+            # Local assets can't be used in email
+            print(f"Local asset image detected: {image_url} - skipping")
+            card_image_html = ""
+        elif image_url.startswith('http'):
+            # Use external URL-based image directly
+            card_image_html = f'<img src="{image_url}" alt="Card" style="max-width: 500px; width: 100%; height: auto; border-radius: 10px; margin: 20px auto; display: block;">'
+            print(f"Using external image URL: {image_url}")
+    
+    # Create HTML email content with card image
+    html_content = f"""
+    <html>
+    <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 15px; text-align: center; color: white;">
+            <h1 style="margin: 0 0 20px 0; font-size: 28px;">🎉 Special Greeting for You!</h1>
+            
+            {card_image_html}
+            
+            <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                <p style="font-size: 18px; line-height: 1.6; margin: 0;">{final_message}</p>
+            </div>
+            <p style="margin: 20px 0 0 0; font-size: 14px; opacity: 0.9;">From: {payload.sender_name}</p>
+        </div>
+        <p style="text-align: center; color: #666; font-size: 12px; margin-top: 20px;">Sent with ❤️ via Greetins</p>
+    </body>
+    </html>
+    """
 
     delivery_channel = ""
+    success = False
+    error_message = ""
+    
     if payload.recipient_email:
         print(f"Sending email to: {payload.recipient_email}")
-        print(f"Email content:\n{rendered_card}")
+        subject = f"Special Greeting from {payload.sender_name}"
+        email_result = await send_zepto_email(
+            to=payload.recipient_email,
+            subject=subject,
+            body=html_content,
+            from_email=payload.sender_email,
+            attachment_base64=base64_image_for_attachment,
+            attachment_name="greeting_card_image.png"
+        )
+        
+        # Correctly check for success based on ZeptoMail's API response
+        if email_result and "data" in email_result and email_result["data"] is not None:
+            success = True
+            error_message = email_result.get("message", "Email sent successfully")
+        else:
+            success = False
+            if email_result and "error" in email_result:
+                error_details = email_result["error"].get("details", [])
+                if error_details:
+                    error_message = error_details[0].get("message", "Failed to send email")
+                else:
+                    error_message = email_result["error"].get("message", "Failed to send email")
+            else:
+                error_message = "An unknown error occurred"
+
         delivery_channel = "email"
     elif payload.recipient_whatsapp:
         print(f"Sending WhatsApp to: {payload.recipient_whatsapp}")
-        print(
-            f"WhatsApp message: {final_message} (card image/link not implemented yet)"
-        )
+        print(f"WhatsApp message: {final_message} (WhatsApp API not implemented yet)")
         delivery_channel = "whatsapp"
+        success = True  # Simulate success for WhatsApp
+        error_message = "WhatsApp sending not yet implemented"
     else:
         return GreetingSendResponse(
+            success=False,
             message="No recipient specified for delivery.",
-            status="failed",
-            delivery_channel="none",
         )
 
-    return GreetingSendResponse(
-        message="Greeting sent successfully!",
-        status="success",
-        delivery_channel=delivery_channel,
-    )
+    if success:
+        return GreetingSendResponse(
+            success=True,
+            message=f"Greeting sent successfully via {delivery_channel}!",
+        )
+    else:
+        return GreetingSendResponse(
+            success=False,
+            message=f"Failed to send greeting via {delivery_channel}: {error_message}",
+        )

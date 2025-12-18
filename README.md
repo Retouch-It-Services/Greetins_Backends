@@ -5,6 +5,38 @@ Send personalized greeting cards through Email or WhatsApp with a seamless React
 Greetins is a modern web application that allows users to choose a greeting card template (e.g., Christmas, New Year, Birthday), fill in their details, and instantly send the greeting to friends, family, or customers.
 Built with a clean architecture and AI-ready backend processing, the platform is designed for speed, simplicity, and scalability.
 
+## ✅ Frontend-Backend Connection: COMPLETE ✅
+
+**Your frontend and backend are now fully integrated and ready to use!**
+
+### 🚀 Quick Start
+```bash
+# Windows
+start-all.bat
+
+# Linux/Mac
+chmod +x start-all.sh && ./start-all.sh
+```
+
+### 🔗 API Base URL
+```
+http://localhost:8000/api/v1
+```
+
+### 📡 Available Endpoints
+- ✅ `POST /greetings/send` - Send greeting
+- ✅ `POST /ai/generate-greeting` - Generate AI message ⭐ NEW
+- ✅ `GET /health` - Health check
+
+### 📚 Integration Documentation
+See these files for setup details:
+- **CONNECTION_SETUP.md** - Quick reference
+- **FRONTEND_BACKEND_INTEGRATION.md** - Full guide with troubleshooting
+- **ARCHITECTURE.md** - System design and data flow
+- **INTEGRATION_SUMMARY.md** - What's been connected
+
+---
+
 🚀 Tech Stack
 Frontend
 

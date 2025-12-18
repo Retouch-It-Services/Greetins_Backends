@@ -16,7 +16,7 @@ christmas:
     - input: { sender_name: "Sarah & Mark" }
       output: "May your Christmas be filled with cheer and laughter. Warmest wishes from Sarah & Mark."
 
-new_year:
+newyear:
   instruction: "Compose an optimistic New Year greeting from {sender_name}, looking forward to a prosperous and happy year ahead."
   examples:
     - input: { sender_name: "Chrissy" }
@@ -39,6 +39,14 @@ diwali:
       output: "Shubh Diwali! May your celebrations be filled with light and laughter. With love, Priya."
     - input: { sender_name: "The Sharma Family" }
       output: "Wishing you and your family a very Happy Diwali and a prosperous New Year. From The Sharma Family."
+
+valentine:
+  instruction: "Create a romantic and heartfelt Valentine's greeting from {sender_name}, expressing love, affection, and warm wishes."
+  examples:
+    - input: { sender_name: "Michael" }
+      output: "Happy Valentine's Day! You make every day special. With all my love, Michael."
+    - input: { sender_name: "Emma & Jack" }
+      output: "Wishing you a day filled with love and happiness. Happy Valentine's Day from Emma & Jack."
 
 thank_you:
   instruction: "Generate a sincere thank you message from {sender_name}, expressing gratitude for a kind gesture or gift."

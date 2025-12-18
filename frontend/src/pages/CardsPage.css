@@ -1,0 +1,26 @@
+.cards-page-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: #000; /* Fallback background */
+}
+
+.background-canvas {
+  position: fixed; /* Use fixed to keep it in place on scroll */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* Background layer */
+  opacity: 0.7;
+}
+
+.content-overlay {
+  position: relative;
+  z-index: 1; /* Foreground layer */
+  width: 100%;
+  min-height: 100vh;
+  /* This allows scrolling over the fixed background */
+  overflow-y: auto;
+}
