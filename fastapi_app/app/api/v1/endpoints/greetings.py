@@ -18,26 +18,27 @@ async def send_greeting(
         # Call the processor to handle sending
         response = await process_and_send_greeting(payload)
 
-        # Create a new Greeting record
-        db_greeting = GreetingModel(
-            sender_name=payload.sender_name,
-            sender_email=payload.sender_email,
-            recipient_email=payload.recipient_email,
-            recipient_whatsapp=payload.recipient_whatsapp,
-            greeting_template_id=payload.greeting_template_id,
-            message=payload.message,
-            delivery_channel=response.delivery_channel,
-            status=response.status,
-            # Store whether the message was AI-generated
-            ai_generated="Yes" if not payload.message else "No",
-        )
-
-        # Add the record to the session and commit it
-        db.add(db_greeting)
-        db.commit()
-        db.refresh(db_greeting)
+        # Try to save to database (optional - don't fail if DB is down)
+        try:
+            db_greeting = GreetingModel(
+                sender_name=payload.sender_name,
+                sender_email=payload.sender_email,
+                recipient_email=payload.recipient_email,
+                recipient_whatsapp=payload.recipient_whatsapp,
+                greeting_template_id=payload.greeting_template_id,
+                message=payload.message,
+                delivery_channel=response.delivery_channel,
+                status=response.status,
+                ai_generated="Yes" if not payload.message else "No",
+            )
+            db.add(db_greeting)
+            db.commit()
+            db.refresh(db_greeting)
+        except Exception as db_error:
+            print(f"Database save failed (non-critical): {db_error}")
+            db.rollback()
 
         return response
     except Exception as e:
-        db.rollback()  # Rollback in case of an error
+        print(f"Error sending greeting: {e}")
         raise HTTPException(status_code=500, detail=str(e))
