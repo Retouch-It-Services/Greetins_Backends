@@ -86,8 +86,9 @@ function SendGreeting() {
     setGeneratingAI(true);
     setStatus(''); // Clear previous status messages
     try {
+      const API_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api/v1';
       const response = await fetch(
-        "http://localhost:8000/api/v1/greetings/ai/generate-greeting",
+        `${API_URL}/greetings/ai/generate-greeting`,
         {
           method: "POST",
           headers: {
