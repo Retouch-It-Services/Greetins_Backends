@@ -2,9 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
-import TeamCarousel from '../components/TeamCarousel'; 
-import { Suspense } from 'react';
-import SolarSystemWrapper from '../components/SolarSystemWrapper';
+import TeamCarousel from '../components/TeamCarousel';
 
 // Add custom animations
 const customStyles = `
@@ -53,10 +51,19 @@ function Landing() {
 
   return (
     <div className="min-h-screen" style={{ position: 'relative', overflow: 'hidden' }}>
+      {/* Video Background */}
       <div className="fixed top-0 left-0 w-full h-full z-0">
-        <Suspense fallback={null}>
-          <SolarSystemWrapper />
-        </Suspense>
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          className="w-full h-full object-cover"
+          style={{ filter: 'brightness(0.7)' }}
+        >
+          <source src="/assets/background-video.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-black/30"></div>
       </div>
       <div className="relative z-10">
         <Header />
