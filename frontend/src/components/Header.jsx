@@ -12,8 +12,7 @@ function Header() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3">
-              <img src="/assets/logo.jpg" alt="RIS Logo" className="h-10 w-10 rounded-full" />
-              <span className="text-2xl font-bold text-white">Greetins</span>
+              <img src="/assets/WhatsApp Image 2025-12-19 at 12.06.08 AM.jpeg" alt="Greetins Logo" className="h-24 w-auto" />
             </Link>
             <nav className="hidden md:flex space-x-8">
               <Link to="/" className="text-gray-200 hover:text-white transition-colors">Home</Link>
@@ -32,8 +31,7 @@ function Header() {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <img src="/assets/logo.jpg" alt="RIS Logo" className="h-10 w-auto" />
-            <span className="text-2xl font-bold text-purple-600">Greetins</span>
+            <img src="/assets/WhatsApp Image 2025-12-19 at 12.06.08 AM.jpeg" alt="Greetins Logo" className="h-20 w-auto" />
           </Link>
         </div>
       </div>

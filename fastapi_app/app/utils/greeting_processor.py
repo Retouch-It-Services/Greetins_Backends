@@ -6,6 +6,8 @@ import yaml
 from dotenv import load_dotenv
 
 from ..schemas import GreetingSendRequest, GreetingSendResponse
+from .email_sender import send_zepto_email
+import asyncio
 
 load_dotenv()
 # --- AI Model Configuration ---
@@ -87,9 +89,7 @@ def _generate_ai_message(
         )
 
 
-def process_and_send_greeting(payload: GreetingSendRequest) -> GreetingSendResponse:
-    # ... (rest of the function is the same)
-    template_content = f"<h1>Hello from {payload.greeting_template_id}!</h1>"
+async def process_and_send_greeting(payload: GreetingSendRequest) -> GreetingSendResponse:
     print(f"Loading template: {payload.greeting_template_id}")
 
     final_message = payload.message
@@ -99,16 +99,43 @@ def process_and_send_greeting(payload: GreetingSendRequest) -> GreetingSendRespo
             template_id=payload.greeting_template_id,
             sender_name=payload.sender_name,
         )
-        rendered_card = f"{template_content}<p>{final_message}</p><p>From: {payload.sender_name}</p>"
-    else:
-        rendered_card = f"{template_content}<p>{final_message}</p><p>From: {payload.sender_name}</p>"
+    
+    # Create personal email HTML (simple design avoids spam filters)
+    card_image_html = ""
+    if payload.card_image:
+        card_image_html = '<div style="text-align: center; margin: 20px 0;"><img src="cid:greeting_card_image" alt="Greeting Card" style="max-width: 500px; width: 100%; height: auto; border-radius: 8px;"/></div>'
+    
+    rendered_card = f"""
+    <html>
+    <body style="font-family: Georgia, serif; color: #333; line-height: 1.6; padding: 20px;">
+        {card_image_html}
+        <p style="font-size: 16px; margin: 20px 0;">{final_message}</p>
+        <p style="font-size: 14px; color: #666; margin-top: 30px;">— {payload.sender_name}</p>
+    </body>
+    </html>
+    """
     print("Rendering custom message...")
 
     delivery_channel = ""
     if payload.recipient_email:
-        print(f"Sending email to: {payload.recipient_email}")
-        print(f"Email content:\n{rendered_card}")
-        delivery_channel = "email"
+        try:
+            await send_zepto_email(
+                to=payload.recipient_email,
+                subject=f"{payload.sender_name} sent you a greeting",
+                body=rendered_card,
+                from_email=payload.sender_email,
+                card_image_base64=payload.card_image
+            )
+            print(f"Email sent successfully to: {payload.recipient_email}")
+            delivery_channel = "email"
+        except Exception as e:
+            print(f"Email sending failed: {e}")
+            return GreetingSendResponse(
+                message=f"Failed to send email: {str(e)}",
+                status="failed",
+                delivery_channel="email",
+                success=False,
+            )
     elif payload.recipient_whatsapp:
         print(f"Sending WhatsApp to: {payload.recipient_whatsapp}")
         print(
@@ -120,10 +147,12 @@ def process_and_send_greeting(payload: GreetingSendRequest) -> GreetingSendRespo
             message="No recipient specified for delivery.",
             status="failed",
             delivery_channel="none",
+            success=False,
         )
 
     return GreetingSendResponse(
         message="Greeting sent successfully!",
         status="success",
         delivery_channel=delivery_channel,
+        success=True,
     )

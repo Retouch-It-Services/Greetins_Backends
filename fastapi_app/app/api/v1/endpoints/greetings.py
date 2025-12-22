@@ -16,7 +16,7 @@ async def send_greeting(
 ):
     try:
         # Call the processor to handle sending
-        response = process_and_send_greeting(payload)
+        response = await process_and_send_greeting(payload)
 
         # Create a new Greeting record
         db_greeting = GreetingModel(

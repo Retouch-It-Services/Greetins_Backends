@@ -11,9 +11,11 @@ class GreetingSendRequest(BaseModel):
     recipient_whatsapp: Optional[str] = None
     greeting_template_id: str
     message: str
+    card_image: Optional[str] = None
 
 
 class GreetingSendResponse(BaseModel):
     message: str
     status: str
     delivery_channel: str
+    success: bool

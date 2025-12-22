@@ -1,7 +1,7 @@
 # -------------------------------
 # Python
 # -------------------------------
-_pycache_/
+__pycache__/
 *.py[cod]
 *.pyo
 *.pyd
@@ -18,6 +18,7 @@ _pycache_/
 venv/
 env/
 .venv/
+fastapi_app/venv/
 
 # -------------------------------
 # Environment & Secrets
@@ -37,6 +38,8 @@ pip-log.txt
 .eggs/
 dist/
 build/
+node_modules/
+package-lock.json
 
 # -------------------------------
 # FastAPI + Uvicorn
@@ -68,7 +71,7 @@ pytest_cache/
 *.db
 *.sqlite3
 *.sqlite
-migrations/
+alembic/versions/
 
 # -------------------------------
 # Uploads
@@ -82,3 +85,18 @@ staticfiles/
 # -------------------------------
 .DS_Store
 Thumbs.db
+
+# -------------------------------
+# React / Frontend
+# -------------------------------
+frontend/node_modules/
+frontend/build/
+frontend/.env
+frontend/package-lock.json
+
+# -------------------------------
+# Temporary Files
+# -------------------------------
+*.txt
+!requirements.txt
+!README.txt
