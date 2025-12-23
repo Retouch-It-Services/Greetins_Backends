@@ -117,32 +117,32 @@ function Landing() {
             {/* Right Card Gallery */}
             <div className="relative">
               <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20">
-                <h3 className="text-white text-xl font-bold mb-6 text-center">Featured Templates</h3>
+                <h3 className="text-white text-xl font-extrabold mb-6 text-center">Featured Templates</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-4">
                     <div className="bg-white rounded-xl p-4 shadow-lg hover:scale-105 transform transition-all duration-300 cursor-pointer animate-bounce" style={{animationDelay: '0s', animationDuration: '3s'}} onClick={() => navigate('/cards')}>
-                      <div className="w-full h-24 bg-gradient-to-br from-pink-400 to-red-400 rounded-lg flex items-center justify-center mb-3">
-                        <span className="text-2xl">🎂</span>
+                      <div className="w-full h-24 rounded-lg overflow-hidden mb-3">
+                        <img src="/assets/christmas/Christmas 1.png" alt="Birthday" className="w-full h-full object-cover" />
                       </div>
                       <p className="text-xs text-gray-600 text-center font-medium">Birthday Cards</p>
                     </div>
                     <div className="bg-white rounded-xl p-4 shadow-lg hover:scale-105 transform transition-all duration-300 cursor-pointer" style={{animation: 'swing 4s ease-in-out infinite', animationDelay: '1s'}} onClick={() => navigate('/cards')}>
-                      <div className="w-full h-32 bg-gradient-to-br from-green-500 to-red-500 rounded-lg flex items-center justify-center mb-3">
-                        <span className="text-2xl">🎄</span>
+                      <div className="w-full h-32 rounded-lg overflow-hidden mb-3">
+                        <img src="/assets/christmas/Christmas 3.png" alt="Christmas" className="w-full h-full object-cover" />
                       </div>
                       <p className="text-xs text-gray-600 text-center font-medium">Christmas Cards</p>
                     </div>
                   </div>
                   <div className="space-y-4">
                     <div className="bg-white rounded-xl p-4 shadow-lg hover:scale-105 transform transition-all duration-300 cursor-pointer" style={{animation: 'float 3.5s ease-in-out infinite', animationDelay: '0.5s'}} onClick={() => navigate('/cards')}>
-                      <div className="w-full h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mb-3">
-                        <span className="text-2xl">🎊</span>
+                      <div className="w-full h-32 rounded-lg overflow-hidden mb-3">
+                        <img src="/assets/newyear/New Year 4.png" alt="New Year" className="w-full h-full object-cover" />
                       </div>
                       <p className="text-xs text-gray-600 text-center font-medium">New Year Cards</p>
                     </div>
                     <div className="bg-white rounded-xl p-4 shadow-lg hover:scale-105 transform transition-all duration-300 cursor-pointer animate-pulse" style={{animationDuration: '2.5s'}} onClick={() => navigate('/cards')}>
-                      <div className="w-full h-24 bg-gradient-to-br from-pink-500 to-red-600 rounded-lg flex items-center justify-center mb-3">
-                        <span className="text-2xl">💕</span>
+                      <div className="w-full h-24 rounded-lg overflow-hidden mb-3">
+                        <img src="/assets/christmas/Merry Christmas 4.png" alt="Valentine" className="w-full h-full object-cover" />
                       </div>
                       <p className="text-xs text-gray-600 text-center font-medium">Valentine Cards</p>
                     </div>
