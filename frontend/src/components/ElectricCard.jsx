@@ -42,7 +42,7 @@ const ElectricCard = ({ member }) => {
           position: relative;
         }
         .electric-border-outer {
-          border: 2px solid rgba(72, 87, 221, 0.5);
+          border: 3px solid #6348dd;
           border-radius: 24px;
           width: 100%;
           height: 100%;
@@ -61,25 +61,25 @@ const ElectricCard = ({ member }) => {
           background: black;
         }
         .electric-glow-1 {
-          border: 2px solid rgba(221, 132, 72, 0.6);
+          border: 3px solid #ff6b35;
           border-radius: 24px;
           width: 100%;
           height: 100%;
           position: absolute;
           top: 0;
           left: 0;
-          filter: blur(1px);
+          filter: url(#turbulent-displace);
           pointer-events: none;
         }
         .electric-glow-2 {
-          border: 2px solid #8b7aff;
+          border: 3px solid #00d4ff;
           border-radius: 24px;
           width: 100%;
           height: 100%;
           position: absolute;
           top: 0;
           left: 0;
-          filter: blur(4px);
+          filter: url(#turbulent-displace);
           pointer-events: none;
         }
         .electric-overlay {
