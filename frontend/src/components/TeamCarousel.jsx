@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ElectricCard from './ElectricCard';
 
 const TeamCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -85,25 +86,14 @@ const TeamCarousel = () => {
           position: absolute;
           width: 280px;
           height: 380px;
-          background: white;
-          border-radius: 20px;
-          overflow: hidden;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
           transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
           cursor: pointer;
-        }
-        .card img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .card.center {
           z-index: 10;
           transform: scale(1.1) translateZ(0);
         }
         .card.center img {
-          filter: none;
         }
         .card.left-2 {
           z-index: 1;
@@ -111,7 +101,6 @@ const TeamCarousel = () => {
           opacity: 0.7;
         }
         .card.left-2 img {
-          filter: grayscale(100%);
         }
         .card.left-1 {
           z-index: 5;
@@ -119,7 +108,6 @@ const TeamCarousel = () => {
           opacity: 0.9;
         }
         .card.left-1 img {
-          filter: grayscale(100%);
         }
         .card.right-1 {
           z-index: 5;
@@ -127,7 +115,6 @@ const TeamCarousel = () => {
           opacity: 0.9;
         }
         .card.right-1 img {
-          filter: grayscale(100%);
         }
         .card.right-2 {
           z-index: 1;
@@ -135,7 +122,6 @@ const TeamCarousel = () => {
           opacity: 0.7;
         }
         .card.right-2 img {
-          filter: grayscale(100%);
         }
         .card.hidden {
           opacity: 0;
@@ -281,7 +267,7 @@ const TeamCarousel = () => {
                 className={`card ${getCardClass(index)}`}
                 onClick={() => updateCarousel(index)}
               >
-                <img src={member.image} alt={member.name} />
+                <ElectricCard member={member} />
               </div>
             ))}
           </div>
