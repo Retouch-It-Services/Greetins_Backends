@@ -10,6 +10,7 @@ import AIGreeting from './pages/AIGreeting';
 import About from './pages/About';
 import Services from './pages/Services';
 import Contact from './pages/Contact';
+import CustomPhotoUpload from './pages/CustomPhotoUpload';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/send-greeting" element={<SendGreeting />} />
         <Route path="/send/:templateId" element={<SendGreeting />} />
         <Route path="/ai-greeting" element={<AIGreeting />} />
+        <Route path="/custom-upload" element={<CustomPhotoUpload />} />
         <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contact />} />

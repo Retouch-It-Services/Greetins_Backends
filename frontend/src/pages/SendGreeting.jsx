@@ -81,44 +81,35 @@ function SendGreeting() {
   const [loading, setLoading] = useState(false);
   const [deliveryMethod, setDeliveryMethod] = useState('email');
   const [generatingAI, setGeneratingAI] = useState(false);
+  const [wishLength, setWishLength] = useState('medium');
 
   const handleGenerateAI = async () => {
     setGeneratingAI(true);
-    setStatus(''); // Clear previous status messages
+    setStatus('');
     try {
-      const API_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api/v1';
-      const response = await fetch(
-        `${API_URL}/greetings/ai/generate-greeting`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            occasion: templateData?.occasion || location.state?.occasion || 'greeting',
-            recipient_name: formData.recipient_name || "a loved one",
-            tone: "warm",
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        // Try to get a detailed error message from the backend
-        const errorData = await response.json().catch(() => null);
-        const errorMessage = errorData?.detail || `Failed to generate AI message (Status: ${response.status})`;
-        setStatus({ type: 'error', message: errorMessage });
-        console.error("AI Generation Error:", errorData || response.statusText);
-        return; // Stop execution
-      }
+      const response = await fetch('http://127.0.0.1:5000/generate-wish', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ length: wishLength }),
+      });
 
       const data = await response.json();
+      if (response.ok) {
+        setFormData(prev => ({
+          ...prev,
+          message: data.wish
+        }));
+      } else {
+        throw new Error(data.error || 'Failed to generate wish');
+      }
+    } catch (err) {
+      console.error("Wish generation error:", err);
       setFormData(prev => ({
         ...prev,
-        message: data.wish
+        message: "Wishing you a wonderful season filled with joy and prosperity!"
       }));
-    } catch (error) {
-      console.error("Network or other error generating AI message:", error);
-      setStatus({ type: 'error', message: 'A network error occurred. Please check your connection.' });
     } finally {
       setGeneratingAI(false);
     }
@@ -307,8 +298,43 @@ function SendGreeting() {
               </div>
             </div>
             
-            {/* AI Generate Button */}
-            <div className="mt-6">
+            {/* AI Generate Button with Length Selection */}
+            <div className="mt-6 space-y-3">
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setWishLength('short')}
+                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                    wishLength === 'short'
+                      ? 'bg-purple-500 text-white'
+                      : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                  }`}
+                >
+                  Short
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setWishLength('medium')}
+                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                    wishLength === 'medium'
+                      ? 'bg-purple-500 text-white'
+                      : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                  }`}
+                >
+                  Medium
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setWishLength('long')}
+                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                    wishLength === 'long'
+                      ? 'bg-purple-500 text-white'
+                      : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                  }`}
+                >
+                  Long
+                </button>
+              </div>
               <button
                 onClick={handleGenerateAI}
                 className="w-full bg-white/10 text-white font-semibold py-3 px-6 rounded-lg border-2 border-white/20 hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-2"

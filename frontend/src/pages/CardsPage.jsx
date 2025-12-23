@@ -29,6 +29,7 @@ function VideoScene() {
 }
 const categories = [
   { id: 'all', name: 'All Cards', count: 150 },
+  { id: 'custom', name: '📸 Upload Photo', count: 0 },
   { id: 'birthday', name: 'Birthday', count: 25 },
   { id: 'anniversary', name: 'Anniversary', count: 18 },
   { id: 'wedding', name: 'Wedding', count: 22 },
@@ -65,6 +66,14 @@ function CardsPage() {
   const [activeCategory, setActiveCategory] = useState('birthday');
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const handleCategoryClick = (categoryId) => {
+    if (categoryId === 'custom') {
+      navigate('/custom-upload');
+    } else {
+      setActiveCategory(categoryId);
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -113,7 +122,7 @@ function CardsPage() {
                   {categories.map(category => (
                     <button
                       key={category.id}
-                      onClick={() => setActiveCategory(category.id)}
+                      onClick={() => handleCategoryClick(category.id)}
                       className={`w-full text-left px-4 py-3 rounded-lg mb-2 transition-all duration-200 flex justify-between items-center ${
                         activeCategory === category.id
                           ? 'bg-purple-500/20 text-purple-200'
@@ -171,6 +180,7 @@ function CardsPage() {
                             <img
                               src={card.image}
                               alt={card.title}
+                              loading="lazy"
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
                             <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300"></div>
