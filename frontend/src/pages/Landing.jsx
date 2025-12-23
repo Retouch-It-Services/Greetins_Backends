@@ -287,35 +287,37 @@ function Landing() {
         {/* Footer */}
         <footer className="text-white py-12">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="flex justify-between items-start">
             <div>
               <h3 className="text-2xl font-bold text-purple-400 mb-4">Greetins</h3>
               <p className="text-gray-400">
                 AI-Enhanced greeting cards for every special moment.
               </p>
             </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-              <div className="space-y-2">
-                <div className="text-gray-400 hover:text-white cursor-pointer">Templates</div>
-                <div className="text-gray-400 hover:text-white cursor-pointer">About</div>
-                <div className="text-gray-400 hover:text-white cursor-pointer">Contact</div>
+            <div className="flex gap-16">
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+                <div className="space-y-2">
+                  <div onClick={() => navigate('/cards')} className="text-gray-400 hover:text-white cursor-pointer">Templates</div>
+                  <div onClick={() => navigate('/about')} className="text-gray-400 hover:text-white cursor-pointer">About</div>
+                  <div onClick={() => navigate('/contact')} className="text-gray-400 hover:text-white cursor-pointer">Contact</div>
+                </div>
               </div>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Support</h4>
-              <div className="space-y-2">
-                <div className="text-gray-400 hover:text-white cursor-pointer">Help Center</div>
-                <div className="text-gray-400 hover:text-white cursor-pointer">Privacy Policy</div>
-                <div className="text-gray-400 hover:text-white cursor-pointer">Terms of Service</div>
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Support</h4>
+                <div className="space-y-2">
+                  <div className="text-gray-400 hover:text-white cursor-pointer">Help Center</div>
+                  <div className="text-gray-400 hover:text-white cursor-pointer">Privacy Policy</div>
+                  <div className="text-gray-400 hover:text-white cursor-pointer">Terms of Service</div>
+                </div>
               </div>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
             {/* Website Link */}
             <div className="mb-4">
-              <a href="https://risinternational.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors">
-                www.risinternational.com
+              <a href="https://www.risinternational.net" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors">
+                www.risinternational.net
               </a>
             </div>
             
