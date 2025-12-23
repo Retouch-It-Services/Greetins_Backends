@@ -246,6 +246,18 @@ function Landing() {
         </section>
 
         {/* Meet Our Team Section */}
+        <section className="py-4">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-2">
+              <h2 className="text-3xl md:text-4xl font-bold text-blue-500 mb-4">
+                Meet Our Team
+              </h2>
+              <p className="text-xl text-gray-300">
+                The talented people behind Greetins
+              </p>
+            </div>
+          </div>
+        </section>
         <TeamCarousel />
 
         {/* Features Section */}

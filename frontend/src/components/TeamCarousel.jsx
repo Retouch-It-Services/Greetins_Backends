@@ -45,32 +45,15 @@ const TeamCarousel = () => {
   }, [currentIndex]);
 
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section className="py-0 relative overflow-hidden">
       <style>{`
-        .about-title {
-          font-size: 7.5rem;
-          font-weight: 900;
-          text-transform: uppercase;
-          letter-spacing: -0.02em;
-          position: absolute;
-          top: 45px;
-          left: 50%;
-          transform: translateX(-50%);
-          pointer-events: none;
-          white-space: nowrap;
-          font-family: "Arial Black", "Arial Bold", Arial, sans-serif;
-          background: linear-gradient(to bottom, rgb(8 42 123) 30%, rgb(8 42 123 / 70%) 76%);
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-        }
         .carousel-container {
           width: 100%;
           max-width: 1200px;
           height: 450px;
           position: relative;
           perspective: 1000px;
-          margin: 80px auto 0;
+          margin: 20px auto 0;
         }
         .carousel-track {
           width: 100%;
@@ -254,7 +237,6 @@ const TeamCarousel = () => {
       `}</style>
 
       <div className="container mx-auto px-4 relative">
-        <h1 className="about-title">MEET OUR TEAM</h1>
         
         <div className="carousel-container">
           <button className="nav-arrow left" onClick={() => updateCarousel(currentIndex - 1)}>‹</button>
