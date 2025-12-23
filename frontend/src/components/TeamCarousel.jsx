@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import ElectricCard from './ElectricCard';
 
 const TeamCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -267,7 +266,9 @@ const TeamCarousel = () => {
                 className={`card ${getCardClass(index)}`}
                 onClick={() => updateCarousel(index)}
               >
-                <ElectricCard member={member} />
+                <div className="bg-white rounded-2xl overflow-hidden shadow-xl h-full">
+                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                </div>
               </div>
             ))}
           </div>
