@@ -14,11 +14,6 @@ function Header() {
             <Link to="/" className="flex items-center gap-3">
               <img src="/assets/WhatsApp Image 2025-12-19 at 12.06.08 AM.jpeg" alt="Greetins Logo" className="h-24 w-auto" />
             </Link>
-            <nav className="hidden md:flex space-x-8">
-              <Link to="/" className="text-gray-200 hover:text-white transition-colors">Home</Link>
-              <Link to="/services" className="text-gray-200 hover:text-white transition-colors">Services</Link>
-              <Link to="/about" className="text-gray-200 hover:text-white transition-colors">About</Link>
-            </nav>
           </div>
         </div>
       </header>
