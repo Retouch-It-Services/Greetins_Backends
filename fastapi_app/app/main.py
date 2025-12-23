@@ -5,9 +5,12 @@ from .api.v1.endpoints import greetings, contact
 
 from .core.database import Base, engine
 
-
-Base.metadata.create_all(bind=engine)
-
+# Only create tables if database is configured
+if engine:
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        print(f"Warning: Could not create database tables: {e}")
 
 app = FastAPI(
     title="Greetins - AI-Enhanced Greeting Card Sender",
@@ -30,3 +33,7 @@ app.include_router(contact.router, prefix="/api/v1", tags=["Contact"])
 @app.get("/")
 async def root():
     return {"message": "Welcome to the Greetins API!"}
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy"}
