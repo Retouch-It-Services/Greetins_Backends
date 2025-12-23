@@ -118,9 +118,9 @@ function Landing() {
             <div className="relative">
               {/* Navigation Buttons Above Featured Templates */}
               <div className="flex justify-center gap-4 mb-6">
-                <Link to="/" className="bg-white/20 backdrop-blur-sm text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/30 transition-colors">Home</Link>
-                <Link to="/services" className="bg-white/20 backdrop-blur-sm text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/30 transition-colors">Services</Link>
-                <Link to="/about" className="bg-white/20 backdrop-blur-sm text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/30 transition-colors">About</Link>
+                <button onClick={() => navigate('/')} className="bg-white/20 backdrop-blur-sm text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/30 transition-colors">Home</button>
+                <button onClick={() => navigate('/services')} className="bg-white/20 backdrop-blur-sm text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/30 transition-colors">Services</button>
+                <button onClick={() => navigate('/about')} className="bg-white/20 backdrop-blur-sm text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/30 transition-colors">About</button>
               </div>
               
               <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20">
