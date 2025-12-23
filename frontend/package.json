@@ -14,8 +14,9 @@
     "threejs-toys": "^0.0.8"
   },
   "scripts": {
-    "start": "set PORT=3000 && react-scripts start",
-    "build": "react-scripts build"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "serve": "serve -s build"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
