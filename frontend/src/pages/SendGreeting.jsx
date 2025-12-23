@@ -128,8 +128,19 @@ function SendGreeting() {
       return;
     }
     if (deliveryMethod === 'email' && !formData.recipient_email.trim()) {
-      setStatus({ type: 'error', message: 'Please enter recipient email' });
+      setStatus({ type: 'error', message: 'Please enter at least one recipient email' });
       return;
+    }
+    
+    // Validate email format for multiple emails
+    if (deliveryMethod === 'email') {
+      const emails = formData.recipient_email.split(',').map(e => e.trim()).filter(e => e);
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const invalidEmails = emails.filter(email => !emailRegex.test(email));
+      if (invalidEmails.length > 0) {
+        setStatus({ type: 'error', message: `Invalid email format: ${invalidEmails.join(', ')}` });
+        return;
+      }
     }
     if (deliveryMethod === 'whatsapp' && !formData.recipient_whatsapp.trim()) {
       setStatus({ type: 'error', message: 'Please enter recipient WhatsApp number' });
@@ -160,23 +171,63 @@ function SendGreeting() {
       
       console.log('Final imageToSend:', imageToSend ? imageToSend.substring(0, 100) : 'NO IMAGE');
       
-      const response = await sendGreeting({
-        sender_name: formData.sender_name,
-        sender_email: formData.sender_email,
-        sender_whatsapp: formData.sender_whatsapp,
-        recipient_email: formData.recipient_email,
-        recipient_whatsapp: formData.recipient_whatsapp,
-        greeting_template_id: templateId || 'birthday-1',
-        message: messageToSend,
-        card_image: imageToSend  // Include the uploaded or template image (converted to base64 if local)
-      });
+      // Split multiple emails and send to each
+      const recipientEmails = formData.recipient_email.split(',').map(e => e.trim()).filter(e => e);
       
-      // Check if the response status indicates success or failure
-      if (response.success) {
-        setStatus({ type: 'success', message: response.message });
+      if (recipientEmails.length > 1) {
+        // Send to multiple recipients
+        let successCount = 0;
+        let failCount = 0;
+        
+        for (const email of recipientEmails) {
+          try {
+            const response = await sendGreeting({
+              sender_name: formData.sender_name,
+              sender_email: formData.sender_email,
+              sender_whatsapp: formData.sender_whatsapp,
+              recipient_email: email,
+              recipient_whatsapp: formData.recipient_whatsapp,
+              greeting_template_id: templateId || 'birthday-1',
+              message: messageToSend,
+              card_image: imageToSend
+            });
+            
+            if (response.success) {
+              successCount++;
+            } else {
+              failCount++;
+            }
+          } catch (error) {
+            failCount++;
+            console.error(`Failed to send to ${email}:`, error);
+          }
+        }
+        
+        if (successCount > 0 && failCount === 0) {
+          setStatus({ type: 'success', message: `Successfully sent to all ${successCount} recipients!` });
+        } else if (successCount > 0) {
+          setStatus({ type: 'success', message: `Sent to ${successCount} recipients. Failed: ${failCount}` });
+        } else {
+          setStatus({ type: 'error', message: `Failed to send to all recipients` });
+        }
       } else {
-        // Status is 'failed' - treat as error
-        setStatus({ type: 'error', message: response.message || 'Failed to send greeting' });
+        // Single recipient
+        const response = await sendGreeting({
+          sender_name: formData.sender_name,
+          sender_email: formData.sender_email,
+          sender_whatsapp: formData.sender_whatsapp,
+          recipient_email: recipientEmails[0],
+          recipient_whatsapp: formData.recipient_whatsapp,
+          greeting_template_id: templateId || 'birthday-1',
+          message: messageToSend,
+          card_image: imageToSend
+        });
+        
+        if (response.success) {
+          setStatus({ type: 'success', message: response.message });
+        } else {
+          setStatus({ type: 'error', message: response.message || 'Failed to send greeting' });
+        }
       }
     } catch (error) {
       console.error('Full error object:', error);
@@ -384,13 +435,14 @@ function SendGreeting() {
               />
 
               <FormInput
-                label="Recipient Email"
-                type="email"
-                placeholder="recipient@example.com"
+                label="Recipient Email(s) - Separate multiple emails with commas"
+                type="text"
+                placeholder="email1@example.com, email2@example.com, email3@example.com"
                 value={formData.recipient_email}
                 onChange={(e) => setFormData({...formData, recipient_email: e.target.value})}
                 required
               />
+              <p className="text-xs text-gray-400 -mt-4">💡 Tip: You can send to multiple recipients by separating emails with commas</p>
               
               <FormInput
                 label="Personal Message (Optional - will use card title if empty)"
