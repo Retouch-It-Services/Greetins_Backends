@@ -1,24 +1,22 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 
 from .... import schemas
-from ....db.session import get_db  # Import the database dependency
-from ....models.greeting import Greeting as GreetingModel  # Import the model
+from ....db.session import get_db
+from ....models.greeting import Greeting as GreetingModel
 from ....utils.greeting_processor import process_and_send_greeting
 
 router = APIRouter()
 
 
-@router.post("/greetings/send", response_model=schemas.GreetingSendResponse)
-async def send_greeting(
-    payload: schemas.GreetingSendRequest,
-    db: Session = Depends(get_db),  # Add the database dependency
-):
+def send_greeting_background(payload: schemas.GreetingSendRequest, db: Session):
+    """Background task to send greeting without blocking the response"""
+    import asyncio
     try:
-        # Call the processor to handle sending
-        response = await process_and_send_greeting(payload)
-
-        # Try to save to database (optional - don't fail if DB is down)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        response = loop.run_until_complete(process_and_send_greeting(payload))
+        
         try:
             db_greeting = GreetingModel(
                 sender_name=payload.sender_name,
@@ -33,12 +31,28 @@ async def send_greeting(
             )
             db.add(db_greeting)
             db.commit()
-            db.refresh(db_greeting)
         except Exception as db_error:
-            print(f"Database save failed (non-critical): {db_error}")
+            print(f"Database save failed: {db_error}")
             db.rollback()
-
-        return response
     except Exception as e:
-        print(f"Error sending greeting: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Background email sending failed: {e}")
+    finally:
+        db.close()
+
+
+@router.post("/greetings/send", response_model=schemas.GreetingSendResponse)
+async def send_greeting(
+    payload: schemas.GreetingSendRequest,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
+    # Add email sending to background tasks - returns immediately
+    background_tasks.add_task(send_greeting_background, payload, db)
+    
+    # Return success response immediately (within 2 seconds)
+    return schemas.GreetingSendResponse(
+        message="Your greeting is being sent!",
+        status="processing",
+        delivery_channel="email" if payload.recipient_email else "whatsapp",
+        success=True,
+    )

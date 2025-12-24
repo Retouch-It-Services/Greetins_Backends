@@ -17,16 +17,19 @@ async def send_zepto_email(
     body: str,
     html: bool = True,
     from_email: str = None,
-    card_image_base64: str = None
+    card_image_base64: str = None,
+    sender_name: str = None
 ):
     sender_email = from_email or FROM_EMAIL
+    display_name = sender_name if sender_name else sender_email.split('@')[0]
 
     email_payload = {
-        "from": {"address": FROM_EMAIL, "name": sender_email.split('@')[0] if sender_email else "Greeting App"},
+        "from": {"address": FROM_EMAIL, "name": display_name},
         "to": [{"email_address": {"address": to}}],
-        "reply_to": [{"address": sender_email}],
+        "reply_to": [{"address": sender_email, "name": display_name}],
         "subject": subject,
         "htmlbody": body if html else body.replace('\n', '<br>'),
+        "textbody": f"{body.replace('<p>', '').replace('</p>', '').replace('<br>', '\n').replace('<div>', '').replace('</div>', '')}",
         "track_clicks": False,
         "track_opens": False
     }
