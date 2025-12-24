@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import TeamCarousel from '../components/TeamCarousel';
+import FloatingMenu from '../components/FloatingMenu';
 
 // Add custom animations
 const customStyles = `
@@ -66,6 +67,7 @@ function Landing() {
         <div className="absolute inset-0 bg-black/30"></div>
       </div>
       <div className="relative z-10">
+        <FloatingMenu />
         <Header />
         
         {/* Hero Section */}
