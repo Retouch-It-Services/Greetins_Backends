@@ -25,11 +25,11 @@ async def send_zepto_email(
 
     email_payload = {
         "from": {"address": FROM_EMAIL, "name": display_name},
-        "to": [{"email_address": {"address": to}}],
+        "to": [{"email_address": {"address": to, "name": ""}}],
         "reply_to": [{"address": sender_email, "name": display_name}],
         "subject": subject,
         "htmlbody": body if html else body.replace('\n', '<br>'),
-        "textbody": f"{body.replace('<p>', '').replace('</p>', '').replace('<br>', '\n').replace('<div>', '').replace('</div>', '')}",
+        "textbody": body.replace('<html>', '').replace('</html>', '').replace('<head>', '').replace('</head>', '').replace('<body>', '').replace('</body>', '').replace('<table>', '').replace('</table>', '').replace('<tr>', '').replace('</tr>', '').replace('<td>', '').replace('</td>', '').replace('<p style="font-size: 16px; color: #333; line-height: 1.6; margin: 20px 0;">', '').replace('<p style="font-size: 14px; color: #666; margin-top: 30px;">', '\n\n').replace('</p>', '\n').replace('<br>', '\n').replace('<img src="cid:greeting_card_image" alt="Greeting Card" style="max-width: 500px; width: 100%; height: auto; border-radius: 8px; display: block; margin: 0 auto;"/>', '[Greeting Card Image]').replace('<meta charset="UTF-8">', '').replace('<meta name="viewport" content="width=device-width, initial-scale=1.0;">', '').strip(),
         "track_clicks": False,
         "track_opens": False
     }

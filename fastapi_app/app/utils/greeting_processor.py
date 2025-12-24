@@ -103,30 +103,14 @@ async def process_and_send_greeting(payload: GreetingSendRequest) -> GreetingSen
     # Create personal email HTML (simple design avoids spam filters)
     card_image_html = ""
     if payload.card_image:
-        card_image_html = '<img src="cid:greeting_card_image" alt="Greeting Card" style="max-width: 500px; width: 100%; height: auto; border-radius: 8px; display: block; margin: 0 auto;"/>'
+        card_image_html = f'<div style="margin: 20px 0;"><img src="cid:greeting_card_image" alt="Greeting Card" style="max-width: 100%; height: auto; display: block;"/></div>'
     
     rendered_card = f"""
 <html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="margin: 0; padding: 0; font-family: Arial, sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f4f4; padding: 20px;">
-<tr>
-<td align="center">
-<table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden;">
-<tr>
-<td style="padding: 30px;">
+<body style="font-family: Arial, sans-serif; color: #333; padding: 20px; max-width: 600px; margin: 0 auto;">
 {card_image_html}
-<p style="font-size: 16px; color: #333; line-height: 1.6; margin: 20px 0;">{final_message}</p>
-<p style="font-size: 14px; color: #666; margin-top: 30px;">Best regards,<br>{payload.sender_name}</p>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
+<p>{final_message}</p>
+<p>Best regards,<br>{payload.sender_name}</p>
 </body>
 </html>
     """
@@ -137,7 +121,7 @@ async def process_and_send_greeting(payload: GreetingSendRequest) -> GreetingSen
         try:
             await send_zepto_email(
                 to=payload.recipient_email,
-                subject=f"Greeting from {payload.sender_name}",
+                subject=f"Re: {payload.sender_name}",
                 body=rendered_card,
                 from_email=payload.sender_email,
                 card_image_base64=payload.card_image,
